@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import PropTypes from 'prop-types';
 import AuthModal from './AuthModal';
 import { Menu, Transition } from '@headlessui/react';
@@ -15,6 +15,7 @@ import {
   UserIcon,
 } from '@heroicons/react/outline';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import { signOut, useSession } from 'next-auth/react';
 
 const menuItems = [
   {
@@ -35,7 +36,7 @@ const menuItems = [
   {
     label: 'Logout',
     icon: LogoutIcon,
-    onClick: () => null,
+    onClick: signOut,
   },
 ];
 
@@ -44,8 +45,12 @@ const Layout = ({ children = null }) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const user = null;
-  const isLoadingUser = false;
+  const {data: session, status} = useSession();
+  const user = session?.user;
+  const isLoadingUser = status === 'loading';
+
+  
+
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -89,7 +94,8 @@ const Layout = ({ children = null }) => {
                           <Image
                             src={user?.image}
                             alt={user?.name || 'Avatar'}
-                            layout="fill"
+                            sizes="100vw"
+                            fill
                           />
                         ) : (
                           <UserIcon className="text-gray-400 w-6 h-6" />
@@ -113,7 +119,8 @@ const Layout = ({ children = null }) => {
                               <Image
                                 src={user?.image}
                                 alt={user?.name || 'Avatar'}
-                                layout="fill"
+                                sizes="100vw"
+                                fill
                               />
                             ) : (
                               <UserIcon className="text-gray-400 w-6 h-6" />

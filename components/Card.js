@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import PropTypes from 'prop-types';
 import { HeartIcon } from '@heroicons/react/solid';
 
@@ -22,7 +22,8 @@ const Card = ({
             <Image
               src={image}
               alt={title}
-              layout="fill"
+              sizes="100vw"
+              fill
               objectFit="cover"
               className="hover:opacity-80 transition"
             />
@@ -64,7 +65,7 @@ const Card = ({
       <p className="mt-2">
         {new Intl.NumberFormat('en-US', {
           style: 'currency',
-          currency: 'USD',
+          currency: 'GBP',
         }).format(price ?? 0)}{' '}
         <span className="text-gray-500">/night</span>
       </p>
